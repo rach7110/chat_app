@@ -13,7 +13,7 @@ io.on('connection', function(socket) {      // Listen on the 'connection' event 
     
     //Broadcast to users a new message.
     socket.on('chat message', function(msg) {
-        var time = new Date().toLocaleString();
+        var time = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
         io.emit('chat message', msg, time);
     });
     //Broadcast to users when someone connects.
