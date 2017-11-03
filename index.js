@@ -13,7 +13,8 @@ io.on('connection', function(socket) {      // Listen on the 'connection' event 
     
     //Broadcast to users a new message.
     socket.on('chat message', function(msg) {
-        io.emit('chat message', msg);
+        var time = new Date().toLocaleString();
+        io.emit('chat message', msg, time);
     });
     //Broadcast to users when someone connects.
     io.emit('user enter', 'A user has entered the chat room.');    
@@ -25,7 +26,7 @@ io.on('connection', function(socket) {      // Listen on the 'connection' event 
 });
 
 http.listen(PORT, function() {              //Make the server listen on port 3000.
-    console.log('listening on ${PORT}');
+    console.log('listening on ' + PORT);
 });
 
 

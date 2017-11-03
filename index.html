@@ -9,19 +9,21 @@
             form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
             form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
             #messages { list-style-type: none; margin: 0; padding: 0; }
-            #messages li { padding: 5px 10px; }
-            #messages li:nth-child(odd) { background: #eee; }
-            .new-message { font-size: 18px; }
-            #messages li.user {font-style: italic; background-color: white;}
+            #messages div { padding: 5px 10px; }
+            #messages .new-message:nth-child(odd) { background: #eee; }
+            .new-message-text {font-size: 14px;}
+            .new-message-time {font-size: 10px;}
+            .new-message-box { font-size: 18px; }
+            #messages div.user {font-style: italic; background-color: white;}
             .user-enter {color: blue;}
             .user-exit {color: red;}
         </style>
     </head>
 
     <body>
-        <ul id="messages"></ul>
+        <div id="messages"></div>
         <form action="">
-            <input class="new-message" type="text" autocomplete="off">
+            <input class="new-message-box" type="text" autocomplete="off">
             <button>Send</button>
         </form>
 
@@ -32,21 +34,26 @@
         $(function() {
             var socket = io();      // Global io from socket.io-client.
             $('form').submit(function() {
-                socket.emit('chat message', $('.new-message').val());
-                $('.new-message').val('');
+                socket.emit('chat message', $('.new-message-box').val());
+                $('.new-message-box').val('');
                 return false;
             });
             //New message.
-            socket.on('chat message', function(msg) {
-                $('#messages').append($('<li>').text(msg));
+            socket.on('chat message', function(msg, time) {
+                var newMessage = $("<div class='new-message'>");
+                var newMessageText = $("<div class='new-message-text'>").text(msg);
+                var newMessageTime = $("<div class='new-message-time'>").text(time);
+
+                $('#messages').append(newMessage);
+                $(newMessage).append(newMessageText).append(newMessageTime);
             });
             //User entered.
             socket.on('user enter',function(msg) {
-                $('#messages').append($('<li class="user user-enter">').text(msg));
+                $('#messages').append($('<div class="user user-enter">').text(msg));
             });            
             //User exited.
             socket.on('user exit',function(msg) {
-                $('#messages').append($('<li class="user user-exit">').text(msg));
+                $('#messages').append($('<div class="user user-exit">').text(msg));
             });
         });
 
