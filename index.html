@@ -11,7 +11,7 @@
             form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
             #messages { list-style-type: none; margin: 0; padding: 0; }
             #messages div { padding: 5px 10px; }
-            #messages .new-message:nth-child(odd) { background: #eee; }
+            #messages .new-message:nth-child(even) { background: #eee; }
             .new-message-text {font-size: 14px;}
             .new-message-time {font-size: 10px;}
             .new-message-box { font-size: 18px; }
@@ -44,9 +44,9 @@
             });
             //New message.
             socket.on('chat message', function(msg, time) {
-                var newMessage = $("<div class='new-message'>");
-                var newMessageText = $("<div class='new-message-text'>").text(msg);
-                var newMessageTime = $("<div class='new-message-time'>").text(time);
+                var newMessage = $("<div class='new-message row'>");
+                var newMessageText = $("<div class='new-message-text col-md-6'>").text(msg);
+                var newMessageTime = $("<div class='new-message-time col-md-6'>").text(time);
 
                 $('#messages').append(newMessage);
                 $(newMessage).append(newMessageText).append(newMessageTime);
