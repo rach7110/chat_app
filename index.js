@@ -1,7 +1,8 @@
 var express = require('express');             
 var app = express();                         //Express framework initializes 'express' to be a function handler.
 var http = require('http').Server(app);     //Supply 'app' to the HTTP server.
-var io = require('socket.io')(http);            // Initialize a new instance of socket.io and pass it the server object, http.
+var io = require('socket.io')(http);       // Initialize a new instance of socket.io and pass it the server object, http.
+var usernames = [];                         
 
 const PORT = process.env.PORT || 3000;
 
@@ -14,7 +15,19 @@ app.get('/', function(req, res) {           // Define a route handler.
 });
 
 io.on('connection', function(socket) {      // Listen on the 'connection' event for incoming sockets.
-    
+    // New user
+    socket.on('new user', function(data, callback) {
+        console.log(data);
+        if(usernames.indexOf(data) != -1 ) {
+            callback(false);
+        } else {
+            socket.nickname = data;
+            usernames.push(socket.nickname);
+            io.sockets.emit('usernames', usernames);
+            callback(true);
+        }
+    });
+
     //Broadcast to users a new message.
     socket.on('chat message', function(msg) {
         var time = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});

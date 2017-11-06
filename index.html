@@ -9,18 +9,35 @@
 
     <body>
         <div class="container">
-            <div id="messages"></div>
-            <form action="">
-                <div class="row">
-                    <div class="col-sm-9">
-                        <input id="new-message-box" class="form-control" type="text" autocomplete="off">
-                    </div>
-                    <div class="col-sm-3">
-                        <input class="btn btn-block" type="submit" value="Send">
-                    </div>
+            <!-- Username -->
+            <div id="usernameWrapper">
+                <p>Enter a username:</p>
+                <form id="setUsername">
+                    <input size="35" type="text" id="new-username" />
+                    <p id="error"></p>
+                    <input type="submit" value="Enter chatroom" />
+                </form>
+            </div>
+            <!-- Message list -->
+            <div id="contentWrap">
+                <div id="messages"></div>
+                    <!-- New message input box -->
+                    <form id="sendMessages">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <input id="new-message-box" class="form-control" type="text" autocomplete="off">
+                            </div>
+                            <div class="col-sm-3">
+                                <input class="btn btn-block" type="submit" value="Send">
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
+
+                <!-- Users currently online -->
+                <div id = "users"></div>
+                
+            </div>
 
         <!-- Load the socket.io-client -->
         <script src="/socket.io/socket.io.js"></script>
@@ -28,12 +45,34 @@
         <script>
         $(function() {
             var socket = io();      // Global io from socket.io-client.
-            $('form').submit(function() {
+            //Username
+            var usernameError = $('#error');
+            var usernameInput = $('#new-username');
+            var $users =        $('#users');
+
+            //New username emitted to server.
+            $('form#setUsername').submit(function() {
+                socket.emit('new user', usernameInput.val(), function (data) {
+                    if(data){
+                        $('#usernameWrapper').hide();
+                        $('#contentWrap').show();
+                    } else {
+                        usernameError.html('sorry, that username has been taken, try another one!');
+                    }
+                });
+
+                usernameInput.val('');
+                return false;
+            });
+
+
+            //New message emitted to server.
+            $('form#sendMessages').submit(function() {
                 socket.emit('chat message', $('#new-message-box').val());
                 $('#new-message-box').val('');
                 return false;
             });
-            //New message.
+            //Display new message.
             socket.on('chat message', function(msg, time) {
                 var newMessage = $("<div class='new-message row'>");
                 var newMessageText = $("<div class='new-message-text col-md-6'>").text(msg);

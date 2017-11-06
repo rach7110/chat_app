@@ -1,5 +1,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font: 13px Helvetica, Arial; }
+#error {color: white;}
+#contentWrap {display: none;}
 form {margin: 10px -15px 10px -15px; padding: 10px; background: black; }
 form input.btn { background: rgb(130, 224, 255);}
 #messages { list-style-type: none; margin: 0; padding: 0; }
