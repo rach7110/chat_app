@@ -26,6 +26,10 @@ io.on('connection', function(socket) {      // Listen on the 'connection' event 
     socket.on('disconnect', function() {
         io.emit('user exit', 'A user has exited the chat room.');
     });
+    //Broadcast when a user is typing.
+    socket.on('user typing', function(charCount) {
+        io.emit('user typing', charCount);
+    });
 
 });
 

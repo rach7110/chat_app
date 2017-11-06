@@ -13,7 +13,7 @@
             <form action="">
                 <div class="row">
                     <div class="col-sm-9">
-                        <input class="new-message-box form-control" type="text" autocomplete="off">
+                        <input id="new-message-box" class="form-control" type="text" autocomplete="off">
                     </div>
                     <div class="col-sm-3">
                         <input class="btn btn-block" type="submit" value="Send">
@@ -29,8 +29,8 @@
         $(function() {
             var socket = io();      // Global io from socket.io-client.
             $('form').submit(function() {
-                socket.emit('chat message', $('.new-message-box').val());
-                $('.new-message-box').val('');
+                socket.emit('chat message', $('#new-message-box').val());
+                $('#new-message-box').val('');
                 return false;
             });
             //New message.
@@ -39,16 +39,41 @@
                 var newMessageText = $("<div class='new-message-text col-md-6'>").text(msg);
                 var newMessageTime = $("<div class='new-message-time col-md-6'>").text(time);
 
+                //Remove the row which indicated a user is typing.
+                $('.user-typing').remove();
+                //Append new row with user's message.
                 $('#messages').append(newMessage);
                 $(newMessage).append(newMessageText).append(newMessageTime);
             });
+
             //User entered.
             socket.on('user enter',function(msg) {
                 $('#messages').append($('<div class="user user-enter">').text(msg));
-            });            
+            });  
+
             //User exited.
             socket.on('user exit',function(msg) {
                 $('#messages').append($('<div class="user user-exit">').text(msg));
+            });
+
+            //User is typing.
+            $('#new-message-box').on('keypress', function (e) {
+                var char = (e.which);
+                var charCount = $('#new-message-box').val().length;
+
+                //If user hits any key except 'return', emit event.
+                if(char !== 13 ) {
+                    socket.emit('user typing', charCount);
+                }
+            });
+
+            socket.on('user typing', function(charCount) {
+                var newTypingBox = $("<div class='user-typing row'>");
+
+                //Insert a new row when user begins typing.
+                if(charCount === 0) {
+                    $('#messages').append(newTypingBox);
+                }
             });
         });
 
