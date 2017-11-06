@@ -74,6 +74,14 @@
                 if(charCount === 0) {
                     $('#messages').append(newTypingBox);
                 }
+
+                //Display '...' while user is typing.
+                if(charCount % 4 !=0 ) {
+                    $('.user-typing').append('.');
+                } else {
+                    $('.user-typing').empty();
+                    $('.user-typing').append('.');
+                }
             });
         });
 
