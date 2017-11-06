@@ -35,7 +35,7 @@
                 </div>
 
                 <!-- Users currently online -->
-                <div id = "users"></div>
+                <div id="users"></div>
                 
             </div>
 
@@ -48,7 +48,7 @@
             //Username
             var usernameError = $('#error');
             var usernameInput = $('#new-username');
-            var $users =        $('#users');
+            var users = $('#users');
 
             //New username emitted to server.
             $('form#setUsername').submit(function() {
@@ -65,6 +65,15 @@
                 return false;
             });
 
+            //Display online users.
+            socket.on('usernames', function(data) {
+                var onlineUsers = "<h2>online users:</h2><hr />";
+                for(var i=0; i < data.length; i++) {
+                    onlineUsers += data[i] + '<br/>';
+                }
+
+                users.html(onlineUsers);
+            });
 
             //New message emitted to server.
             $('form#sendMessages').submit(function() {
