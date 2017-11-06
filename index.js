@@ -36,7 +36,8 @@ io.on('connection', function(socket) {      // Listen on the 'connection' event 
     //Broadcast to users when someone connects.
     io.emit('user enter', 'A user has entered the chat room.');    
     //Broadcast to users when someone disconnects.
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function(data) {
+        usernames.splice(usernames.indexOf(socket.username), 1)
         io.emit('user exit', 'A user has exited the chat room.');
     });
     //Broadcast when a user is typing.
