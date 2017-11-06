@@ -1,10 +1,14 @@
-var express = require('express')();             //Express framework initializes 'express' to be a function handler.
-var http = require('http').Server(express);     //Supply 'express' to the HTTP server.
+var express = require('express');             
+var app = express();                         //Express framework initializes 'express' to be a function handler.
+var http = require('http').Server(app);     //Supply 'app' to the HTTP server.
 var io = require('socket.io')(http);            // Initialize a new instance of socket.io and pass it the server object, http.
 
 const PORT = process.env.PORT || 3000;
 
-express.get('/', function(req, res) {           // Define a route handler.
+//Serve static files with Express.
+app.use("/css", express.static(__dirname + '/css'));
+
+app.get('/', function(req, res) {           // Define a route handler.
     // res.send('<h1>Hello world</h1>');
     res.sendFile(__dirname + '/index.html');
 });
