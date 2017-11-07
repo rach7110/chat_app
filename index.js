@@ -25,7 +25,7 @@ io.on('connection', function(socket) {      // Listen on the 'connection' event 
             usernames.push(socket.username);
             callback(true);
             io.emit('user enter', socket.username + " has entered the chat room.");        
-            io.sockets.emit('usernames', usernames);
+            io.emit('usernames', usernames);
         }
     });
 
@@ -35,6 +35,7 @@ io.on('connection', function(socket) {      // Listen on the 'connection' event 
 
         usernames.splice(usernames.indexOf(socket.username), 1)
         io.emit('user exit', socket.username + " has exited the chat room.");
+        io.emit('usernames', usernames);
     });
 
     //Broadcast to users a new message.
