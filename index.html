@@ -18,26 +18,28 @@
                     <input type="submit" value="Enter chatroom" />
                 </form>
             </div>
-            <!-- Message list -->
             <div id="contentWrap">
-                <div id="messages"></div>
-                    <!-- New message input box -->
-                    <form id="sendMessages">
-                        <div class="row">
-                            <div class="col-sm-9">
-                                <input id="new-message-box" class="form-control" type="text" autocomplete="off">
-                            </div>
-                            <div class="col-sm-3">
-                                <input class="btn btn-block" type="submit" value="Send">
-                            </div>
-                        </div>
-                    </form>
+                <div class="row">
+                    <!-- Message list -->
+                    <div id="messages" class="col-md-9"></div>
+                    <!-- Online users-->
+                    <div id="users-online" class="col-md-3"></div>
                 </div>
-
-                <!-- Users currently online -->
-                <div id="users"></div>
-                
+                <!-- New message box -->
+                <form id="sendMessages">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <input id="new-message-box" class="form-control" type="text" autocomplete="off">
+                        </div>
+                        <div class="col-sm-3">
+                            <input class="btn btn-block" type="submit" value="Send">
+                        </div>
+                    </div>
+                </form>
             </div>
+
+                
+        </div>
 
         <!-- Load the socket.io-client -->
         <script src="/socket.io/socket.io.js"></script>
@@ -47,7 +49,7 @@
             var socket = io();      // Global io from socket.io-client.
             var usernameError = $('#error');
             var usernameInput = $('#new-username');
-            var users = $('#users');
+            var users = $('#users-online');
 
             //New user connects.
             $('form#setUsername').submit(function() {
@@ -66,7 +68,7 @@
 
             //Display online users.
             socket.on('usernames', function(usernames) {
-                var onlineUsers = "<h2>online users:</h2><hr />";
+                var onlineUsers = "<h5>online users:</h5><hr />";
                 for(var i=0; i < usernames.length; i++) {
                     onlineUsers += usernames[i] + '<br/>';
                 }

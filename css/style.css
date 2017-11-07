@@ -2,10 +2,11 @@
 body { font: 13px Helvetica, Arial; }
 #error {color: white;}
 #contentWrap {display: none;}
-form {margin: 10px -15px 10px -15px; padding: 10px; background: black; }
+form {margin: 10px 0px 10px -15px; padding: 10px; background: black; }
 form input.btn { background: rgb(130, 224, 255);}
 #messages { list-style-type: none; margin: 0; padding: 0; }
 #messages div { padding: 5px 10px; }
+.new-message.row {margin-right: 0px;}
 #messages .new-message:nth-child(even) { background: #eee; }
 .new-message-text {font-size: 1.2em;}
 #messages div.user {font-style: italic; background-color: white;}
