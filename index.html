@@ -70,7 +70,7 @@
             socket.on('usernames', function(usernames) {
                 var onlineUsers = "<h5>online users:</h5><hr />";
                 for(var i=0; i < usernames.length; i++) {
-                    onlineUsers += usernames[i] + '<br/>';
+                    onlineUsers += "<p>" + usernames[i] + "</p>";
                 }
 
                 users.html(onlineUsers);

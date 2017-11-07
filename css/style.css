@@ -12,3 +12,4 @@ form input.btn { background: rgb(130, 224, 255);}
 #messages div.user {font-style: italic; background-color: white;}
 .user-enter {color: blue;}
 .user-exit {color: red;}
+#users-online p {margin-bottom: 0.25em;}
