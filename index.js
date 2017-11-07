@@ -15,17 +15,24 @@ app.get('/', function(req, res) {           // Define a route handler.
 });
 
 io.on('connection', function(socket) {      // Listen on the 'connection' event for incoming sockets.
-    // New user
+    
+    //Broadcast to users when someone connects (and update users list).
     socket.on('new user', function(data, callback) {
-        console.log(data);
         if(usernames.indexOf(data) != -1 ) {
             callback(false);
         } else {
-            socket.nickname = data;
-            usernames.push(socket.nickname);
-            io.sockets.emit('usernames', usernames);
+            socket.username = data;
+            usernames.push(socket.username);
             callback(true);
+            io.emit('user enter', socket.username + " has entered the chat room.");        
+            io.sockets.emit('usernames', usernames);
         }
+    });
+
+    //Broadcast to users when someone disconnects (and update users list).
+    socket.on('disconnect', function(data) {
+        usernames.splice(usernames.indexOf(socket.username), 1)
+        io.emit('user exit', 'A user has exited the chat room.');
     });
 
     //Broadcast to users a new message.
@@ -33,13 +40,7 @@ io.on('connection', function(socket) {      // Listen on the 'connection' event 
         var time = new Date().toLocaleString("en-US", {timeZone: "America/New_York"});
         io.emit('chat message', msg, time);
     });
-    //Broadcast to users when someone connects.
-    io.emit('user enter', 'A user has entered the chat room.');    
-    //Broadcast to users when someone disconnects.
-    socket.on('disconnect', function(data) {
-        usernames.splice(usernames.indexOf(socket.username), 1)
-        io.emit('user exit', 'A user has exited the chat room.');
-    });
+
     //Broadcast when a user is typing.
     socket.on('user typing', function(charCount) {
         io.emit('user typing', charCount);

@@ -45,12 +45,11 @@
         <script>
         $(function() {
             var socket = io();      // Global io from socket.io-client.
-            //Username
             var usernameError = $('#error');
             var usernameInput = $('#new-username');
             var users = $('#users');
 
-            //New username emitted to server.
+            //New user connects.
             $('form#setUsername').submit(function() {
                 socket.emit('new user', usernameInput.val(), function (data) {
                     if(data){
@@ -66,13 +65,23 @@
             });
 
             //Display online users.
-            socket.on('usernames', function(data) {
+            socket.on('usernames', function(usernames) {
                 var onlineUsers = "<h2>online users:</h2><hr />";
-                for(var i=0; i < data.length; i++) {
-                    onlineUsers += data[i] + '<br/>';
+                for(var i=0; i < usernames.length; i++) {
+                    onlineUsers += usernames[i] + '<br/>';
                 }
 
                 users.html(onlineUsers);
+            });
+
+            //Display message when user enters chat room.
+            socket.on('user enter',function(msg) {
+                $('#messages').append($('<div class="user user-enter">').text(msg));                
+            });  
+
+            //Display message when user exits chat room.
+            socket.on('user exit',function(msg) {
+                $('#messages').append($('<div class="user user-exit">').text(msg));
             });
 
             //New message emitted to server.
@@ -81,6 +90,7 @@
                 $('#new-message-box').val('');
                 return false;
             });
+
             //Display new message.
             socket.on('chat message', function(msg, time) {
                 var newMessage = $("<div class='new-message row'>");
@@ -92,16 +102,6 @@
                 //Append new row with user's message.
                 $('#messages').append(newMessage);
                 $(newMessage).append(newMessageText).append(newMessageTime);
-            });
-
-            //User entered.
-            socket.on('user enter',function(msg) {
-                $('#messages').append($('<div class="user user-enter">').text(msg));
-            });  
-
-            //User exited.
-            socket.on('user exit',function(msg) {
-                $('#messages').append($('<div class="user user-exit">').text(msg));
             });
 
             //User is typing.
