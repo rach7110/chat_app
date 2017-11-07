@@ -31,8 +31,10 @@ io.on('connection', function(socket) {      // Listen on the 'connection' event 
 
     //Broadcast to users when someone disconnects (and update users list).
     socket.on('disconnect', function(data) {
+        if(!socket.username) return;
+
         usernames.splice(usernames.indexOf(socket.username), 1)
-        io.emit('user exit', 'A user has exited the chat room.');
+        io.emit('user exit', socket.username + " has exited the chat room.");
     });
 
     //Broadcast to users a new message.
