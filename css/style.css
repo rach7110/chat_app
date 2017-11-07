@@ -6,10 +6,12 @@ form {padding: 10px; background: black; }
 form input.btn { background: rgb(130, 224, 255);}
 #messages { list-style-type: none; margin: 0;}
 #messages div { padding: 5px 10px; }
-.new-message.row {margin-right: 0px; margin-left: 0px}
+.new-message.row, .user-typing.row {margin-right: 0px; margin-left: 0px}
 #messages .new-message:nth-child(even) { background: #eee; }
-.new-message-text {font-size: 1.2em;}
 #messages div.user {font-style: italic; background-color: white;}
 .user-enter {color: blue;}
 .user-exit {color: red;}
 #users-online p {margin-bottom: 0.25em;}
+
+.new-message-text {font-size: 1.2em;}
+.new-message-user {font-size: 0.8em;}

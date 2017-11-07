@@ -94,16 +94,15 @@
             });
 
             //Display new message.
-            socket.on('chat message', function(msg, time) {
+            socket.on('chat message', function(msg, time, user) {
                 var newMessage = $("<div class='new-message row'>");
+                var newMessageUser = $("<div class='new-message-user col-md-2'>").text(user);
                 var newMessageText = $("<div class='new-message-text col-md-6'>").text(msg);
-                var newMessageTime = $("<div class='new-message-time col-md-6'>").text(time);
-
                 //Remove the row which indicated a user is typing.
                 $('.user-typing').remove();
                 //Append new row with user's message.
                 $('#messages').append(newMessage);
-                $(newMessage).append(newMessageText).append(newMessageTime);
+                $(newMessage).append(newMessageUser).append(newMessageText).append(newMessageTime);
             });
 
             //User is typing.
