@@ -7,7 +7,7 @@ var usernames = [];
 const PORT = process.env.PORT || 3000;
 
 //Serve static files with Express.
-app.use("/css", express.static(__dirname + '/css'));
+app.use("/public", express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {           // Define a route handler.
     // res.send('<h1>Hello world</h1>');

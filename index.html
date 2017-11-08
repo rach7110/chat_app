@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Socket.IO Chat</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="/public/css/style.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
@@ -41,107 +41,15 @@
                 
         </div>
 
-        <!-- Load the socket.io-client -->
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-        <script>
-        $(function() {
-            var socket = io();      // Global io from socket.io-client.
-            var usernameError = $('#error');
-            var usernameInput = $('#new-username');
-            var users = $('#users-online');
-
-            //New user connects.
-            $('form#setUsername').submit(function() {
-                socket.emit('new user', usernameInput.val(), function (data) {
-                    if(data){
-                        $('#usernameWrapper').hide();
-                        $('#contentWrap').show();
-                    } else {
-                        usernameError.html('sorry, that username has been taken, try another one!');
-                    }
-                });
-
-                usernameInput.val('');
-                return false;
-            });
-
-            //Display online users.
-            socket.on('usernames', function(usernames) {
-                var onlineUsers = "<h5>online users:</h5><hr />";
-                for(var i=0; i < usernames.length; i++) {
-                    onlineUsers += "<p>" + usernames[i] + "</p>";
-                }
-
-                users.html(onlineUsers);
-            });
-
-            //Display message when user enters chat room.
-            socket.on('user enter',function(msg) {
-                $('#messages').append($('<div class="user user-enter">').text(msg));                
-            });  
-
-            //Display message when user exits chat room.
-            socket.on('user exit',function(msg) {
-                $('#messages').append($('<div class="user user-exit">').text(msg));
-            });
-
-            //New message emitted to server.
-            $('form#sendMessages').submit(function() {
-                socket.emit('chat message', $('#new-message-box').val());
-                $('#new-message-box').val('');
-                return false;
-            });
-
-            //Display new message.
-            socket.on('chat message', function(msg, time, user) {
-                var newMessage = $("<div class='new-message row'>");
-                var newMessageUser = $("<div class='new-message-user col-md-2'>").text(user);
-                var newMessageText = $("<div class='new-message-text col-md-6'>").text(msg);
-                var newMessageTime = $("<div class='new-message-time col-md-4'>").text(time);
-                //Remove the row which indicated a user is typing.
-                $('.user-typing').remove();
-                //Append new row with user's message.
-                $('#messages').append(newMessage);
-                $(newMessage).append(newMessageUser).append(newMessageText).append(newMessageTime);
-            });
-
-            //User is typing.
-            $('#new-message-box').on('keypress', function (e) {
-                var char = (e.which);
-                var charCount = $('#new-message-box').val().length;
-
-                //If user hits any key except 'return', emit event.
-                if(char !== 13 ) {
-                    socket.emit('user typing', charCount);
-                }
-            });
-
-            socket.on('user typing', function(charCount) {
-                var newTypingBox = $("<div class='user-typing row'>");
-                var isTyping = $('.user-typing').length;
-
-                //Insert a new row when user begins typing.
-                if(charCount === 0 && isTyping === 0) {
-                    $('#messages').append(newTypingBox);
-                }
-
-                //Display '...' while user is typing.
-                if(charCount % 4 !=0 ) {
-                    $('.user-typing').append('.');
-                } else {
-                    $('.user-typing').empty();
-                    $('.user-typing').append('.');
-                }
-            });
-        });
-
-        </script>
-
         <!-- jQuery, Popper.js, and Bootstrap JS-->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+        <!-- Load the socket.io-client -->
+        <script src="/socket.io/socket.io.js"></script>
+        <!-- External script -->
+        <script src="public/js/script.js"></script>
 
     </body>
 
