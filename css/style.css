@@ -14,4 +14,4 @@ form input.btn { background: rgb(130, 224, 255);}
 #users-online p {margin-bottom: 0.25em;}
 
 .new-message-text {font-size: 1.2em;}
-.new-message-user {font-size: 0.8em;}
+.new-message-user {color: purple;}
